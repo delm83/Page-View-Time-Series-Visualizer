@@ -10,18 +10,20 @@ df = pd.read_csv('fcc-forum-pageviews.csv').set_index('date')
 # Clean data
 df = df[(df['value'] >= df['value'].quantile(0.025)) 
      & (df['value'] <= df['value'].quantile(0.975))]
-
+print(df)
 
 def draw_line_plot():
-    pass
     # Draw line plot
-
-
-
-
-
+    fig, ax = plt.subplots()
+    plt.plot(df.index, df['value'])
+    ax.xaxis.set_major_locator(plt.MaxNLocator(8))
+    plt.title('Daily freeCodeCamp Forum Page Views')
+    plt.xlabel('Date')
+    plt.ylabel('Page Views')
+    plt.tight_layout()
+    
     # Save image and return fig (don't change this part)
-    #fig.savefig('line_plot.png')
+    fig.savefig('line_plot.png')
     #return fig
 
 def draw_bar_plot():
@@ -48,8 +50,7 @@ def draw_box_plot():
     #df_box['month'] = [d.strftime('%b') for d in df_box.date]
 
     # Draw box plots (using Seaborn)
-
-    print(df)
+   
 
 
 
