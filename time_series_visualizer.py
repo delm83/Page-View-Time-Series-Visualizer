@@ -10,14 +10,16 @@ df = pd.read_csv('fcc-forum-pageviews.csv').set_index('date')
 # Clean data
 df = df[(df['value'] >= df['value'].quantile(0.025)) 
      & (df['value'] <= df['value'].quantile(0.975))]
-print(df)
 
 def draw_line_plot():
     # Draw line plot
     fig, ax = plt.subplots()
+    # convert index date values to pandas datetime objects
+    df.index = pd.to_datetime(df.index)
     plt.plot(df.index, df['value'])
-    ax.xaxis.set_major_locator(plt.MaxNLocator(8))
-    plt.title('Daily freeCodeCamp Forum Page Views')
+    #stretched fig horizontally
+    fig.set_figwidth(10)
+    plt.title('Daily freeCodeCamp Forum Page Views 5/2016-12/2019')
     plt.xlabel('Date')
     plt.ylabel('Page Views')
     plt.tight_layout()
