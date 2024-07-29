@@ -30,14 +30,16 @@ def draw_line_plot():
 
 def draw_bar_plot():
     # Copy and modify data for monthly bar plot, extract years and months for grouping
-    df['year'] = df.index.strftime('%Y')
+    df_bar = df
+    df_bar['year'] = df_bar.index.strftime('%Y')
     # use numeric month values so I can group them
-    df['month'] = df.index.strftime('%m')
+    df_bar['month'] = df_bar.index.strftime('%m')
     # get the average of values grouped by year and month
-    df_bar = df.groupby(['year', 'month'])['value'].mean().reset_index().set_index('year')
+    df_bar = df_bar.groupby(['year', 'month'])['value'].mean().reset_index().set_index('year')
     # Use pivot to change dataframe from long to wide format and then plot bar chart
     # using dataframe plot method instead of matplotlib plot method (can also use .plot(kind='bar'))
     df_bar.pivot(columns='month').plot.bar()
+
     # Draw bar plot    Using fig = plt because using dataframe plot method instead of matplotlib plot method
     fig = plt
     plt.legend(labels=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'], fontsize=8).set_title('Months')
@@ -56,18 +58,17 @@ def draw_bar_plot():
     return fig
 
 def draw_box_plot():
-    pass
     # Prepare data for box plots (this part is done!)
-    #df_box = df.copy()
-    #df_box.reset_index(inplace=True)
-    #df_box['year'] = [d.year for d in df_box.date]
-    #df_box['month'] = [d.strftime('%b') for d in df_box.date]
+    df_box = df.copy()
+    df_box.reset_index(inplace=True)
+    df_box['year'] = [d.year for d in df_box.date]
+    df_box['month'] = [d.strftime('%b') for d in df_box.date]
 
     # Draw box plots (using Seaborn)
-   
-
-
+    fig, (ax1, ax2) = plt.subplots(1,2)
+    sns.boxplot(x ='year', y ='value', data = df_box, ax=ax1)
+    sns.boxplot(x ='month', y ='value', data = df_box, ax=ax2)
 
     # Save image and return fig (don't change this part)
-    #fig.savefig('box_plot.png')
-    #return fig
+    fig.savefig('box_plot.png')
+    return fig
